@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monthly Stock Picker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function showPopup(message) {
+            const modal = document.getElementById("popup-modal");
+            const msgContainer = document.getElementById("popup-message");
+            msgContainer.textContent = message;
+            modal.classList.remove("hidden");
+        }
+        function closePopup() {
+            document.getElementById("popup-modal").classList.add("hidden");
+        }
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center py-12 font-sans">
+
+    <!-- Title Section -->
+    <h1 class="text-4xl font-extrabold text-gray-800 mb-8">
+        💹 Monthly Stock Picker Workflow
+    </h1>
+
+    <!-- Main Container -->
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl p-8 space-y-6">
+
+        <!-- Start Button -->
+        <div class="flex justify-center">
+            <button onclick="startWorkflow()"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg shadow transition transform hover:scale-105">
+                ▶️ Start Workflow
+            </button>
+        </div>
+
+        <!-- Output Section -->
+        <div id="workflow-output"
+             class="bg-gray-50 border border-gray-200 rounded-lg p-4 text-sm font-mono whitespace-pre-line text-gray-800 h-auto min-h-[200px] overflow-y-auto">
+             Ready to start the workflow...
+        </div>
+
+        <!-- Approval Section -->
+        <div id="approval-section" class="hidden text-center space-y-4">
+            <h3 class="text-lg font-semibold text-gray-700">⚠️ Human Approval Required</h3>
+            <div class="flex justify-center space-x-6">
+                <button onclick="sendApproval(true)"
+                    class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg shadow transition transform hover:scale-105">
+                    ✅ Approve
+                </button>
+                <button onclick="sendApproval(false)"
+                    class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg shadow transition transform hover:scale-105">
+                    ❌ Reject
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="popup-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div class="bg-white rounded-xl shadow-lg p-6 w-96 text-center">
+            <h2 class="text-xl font-bold text-gray-800 mb-3">Executed Order Details</h2>
+            <pre id="popup-message" class="text-sm bg-gray-100 p-3 rounded-lg text-left overflow-x-auto"></pre>
+            <button onclick="closePopup()"
+                class="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow transition">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Script -->
+    <script>
+        let workflowState = null;
+
+        async function startWorkflow() {
+            document.getElementById("workflow-output").innerText = "🚀 Running workflow...";
+            const response = await fetch('/run_workflow', { method: 'POST' });
+            const data = await response.json();
+            workflowState = data;
+            updateOutput(data);
+        }
+
+        async function sendApproval(approved) {
+            const response = await fetch(`/run_workflow?approved=${approved}`, { method: 'POST' });
+            const data = await response.json();
+            workflowState = data;
+            updateOutput(data);
+
+            // If executed order available, show popup
+            if (data.executed_order) {
+                const msg = typeof data.executed_order === 'object'
+                    ? JSON.stringify(data.executed_order, null, 2)
+                    : data.executed_order;
+                showPopup(msg);
+            }
+        }
+
+        function updateOutput(data) {
+            let output = "";
+            output += "💰 Total Savings: " + data.total_savings + "\n";
+            output += "📊 Portfolio: " + JSON.stringify(data.portfolio, null, 2) + "\n";
+            output += "📈 Suggested Stocks: " + JSON.stringify(data.suggested_stocks, null, 2) + "\n";
+            output += "⏳ Awaiting Approval: " + data.awaiting_approval + "\n";
+            output += "✅ Approved: " + data.approved + "\n";
+
+            const executedOrder = typeof data.executed_order === 'object'
+                ? JSON.stringify(data.executed_order, null, 2)
+                : data.executed_order;
+
+            output += "💹 Executed Order: " + executedOrder + "\n";
+            output += "📝 Investment Execution: " + data.investment_execution + "\n";
+            output += "📌 Status: " + data.status_message + "\n";
+
+            const outputBox = document.getElementById("workflow-output");
+            outputBox.innerText = output;
+
+            // Show approval section if needed
+            if (data.awaiting_approval) {
+                document.getElementById("approval-section").classList.remove("hidden");
+            } else {
+                document.getElementById("approval-section").classList.add("hidden");
+            }
+        }
+    </script>
+
+</body>
+</html>
