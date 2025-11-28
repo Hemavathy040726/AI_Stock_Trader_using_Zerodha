@@ -1,2 +1,16 @@
-#environment
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# IDE
+.idea/
+*.iml
+
+# Logs
+logs/
+*.log
+
+# Environment files
 .env
+.env.*
