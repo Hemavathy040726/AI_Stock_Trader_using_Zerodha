@@ -5,7 +5,14 @@
 
 This project demonstrates a complete production-ready workflow combining **LangChain-based AI agents**, **Zerodha API automation**, and **FastAPI web interface** to create an intelligent, interactive AI-driven trading system.
 
-<p align="center"> <img src="https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white" alt="Python"> <img src="https://img.shields.io/badge/FastAPI-0.110+-brightgreen?logo=fastapi&logoColor=white" alt="FastAPI"> <img src="https://img.shields.io/badge/LangChain-LangGraph%20Enabled-orange?logo=openai&logoColor=white" alt="LangChain LangGraph"> <img src="https://img.shields.io/badge/Framework-Agentic%20AI-yellow?logo=ai&logoColor=white" alt="Agentic AI"> <img src="https://img.shields.io/badge/Status-POC%20Experiment-lightgrey" alt="Status"> </p>
+<p align="center"> <img src="https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white" alt="Python"> 
+   <img src="https://img.shields.io/badge/LangChain-LangGraph%20Enabled-orange?logo=openai&logoColor=white" alt="LangChain LangGraph"> 
+  <img src="https://img.shields.io/badge/Framework-Agentic%20AI-yellow?logo=ai&logoColor=white" alt="Agentic AI">
+  <img src="https://img.shields.io/badge/Zerodha-Enabled-blue?logo=telegram&logoColor=white" alt="Zerodha API">
+  <img src="https://img.shields.io/badge/KiteConnect-API%20Integrated-red?logo=cloudflare&logoColor=white" alt="KiteConnect API">
+  <img src="https://img.shields.io/badge/FastAPI-0.110+-brightgreen?logo=fastapi&logoColor=white" alt="FastAPI"> 
+  <img src="https://img.shields.io/badge/Status-POC%20Experiment-lightgrey" alt="Status">
+</p>
 
 
 
@@ -920,8 +927,210 @@ The project now supports full containerization.
 📌 Status: Executing stock purchase...
 
 ```
+* * * * *
+
+
+
 
 * * * * *
+
+🔐 Zerodha API Integration Guide
+================================
+
+This project integrates with the **Zerodha KiteConnect API** for accessing live market data, fetching LTPs, and placing buy orders.\
+To use these features, you must configure your **environment variables** correctly.
+
+* * * * *
+
+🧩 Required Environment Variables
+=================================
+
+Create a `.env` file in the project root:
+
+```
+# Zerodha API
+KITE_API_KEY=your_api_key
+KITE_API_SECRET=your_api_secret
+KITE_REQUEST_TOKEN=your_request_token
+
+# Optional
+KITE_ACCESS_TOKEN=your_access_token
+
+```
+
+### Meaning of Each Variable
+
+| Variable | Purpose | Required |
+| --- | --- | --- |
+| `KITE_API_KEY` | Identifies your app on Zerodha | ✔ |
+| `KITE_API_SECRET` | Secret used to generate session token | ✔ |
+| `KITE_REQUEST_TOKEN` | Temporary token obtained after login | ✔ |
+| `KITE_ACCESS_TOKEN` | Permanent session token (once generated) | Optional (auto-generated if not provided) |
+
+* * * * *
+
+🧭 Step-by-Step: How to Obtain Zerodha API Credentials
+======================================================
+
+Follow these steps carefully.
+
+1️⃣ Create a Zerodha Developer Account
+--------------------------------------
+
+1.  Go to **<https://developers.kite.trade/>**
+
+2.  Log in using your regular Zerodha credentials.
+
+3.  Subscribe to the **KiteConnect API** (paid monthly).
+
+4.  Create a **new app**.
+
+You will immediately get:
+
+-   **API Key**
+
+-   **API Secret**
+
+Add these to `.env`.
+
+* * * * *
+
+2️⃣ Generate Daily Request Token (Manual Step)
+----------------------------------------------
+
+Zerodha requires you to generate a **new request token each day**.
+
+To generate it:
+
+1.  Open the login URL:
+
+```
+https://kite.trade/connect/login?api_key=YOUR_API_KEY
+
+```
+
+1.  Log in using:
+
+-   Zerodha User ID
+
+-   Password
+
+-   Pin
+
+1.  After login, you will be redirected to your **redirect URL**.\
+    It will look like this:
+
+```
+https://your-redirect-url.com/?status=success&request_token=abcd1234efgh5678
+
+```
+
+1.  Copy the value of `request_token`.\
+    Example:
+
+```
+KITE_REQUEST_TOKEN=abcd1234efgh5678
+
+```
+
+* * * * *
+
+3️⃣ Generate `access_token` (Once per day)
+------------------------------------------
+
+In your project code, session generation is done via:
+
+```
+data = kite.generate_session(request_token, api_secret=API_SECRET)
+kite.set_access_token(data["access_token"])
+
+```
+
+You can print the value or log it for reference:
+
+```
+logger.info(f"Access Token: {data['access_token']}")
+
+```
+
+Add it to `.env` if you want persistent usage:
+
+```
+KITE_ACCESS_TOKEN=your_access_token
+
+```
+
+* * * * *
+
+🛠 How the Project Uses Zerodha API Internally
+==============================================
+
+### 📌 Fetching Live Market Prices
+
+Used in:
+
+```
+src/core/tools/stock_suggest.py
+
+```
+
+Wrapped with retry logic:
+
+```
+@retry(max_attempts=6, delay=2)
+def _safe_ltp_call(kite, symbols):
+    return kite.ltp(symbols)
+
+```
+
+* * * * *
+
+### 📌 Placing Live Orders
+
+Used in:
+
+```
+src/core/tools/stock_buy.py
+
+```
+
+Example:
+
+```
+order = kite.place_order(
+    tradingsymbol=symbol,
+    exchange="NSE",
+    quantity=quantity,
+    transaction_type="BUY",
+    order_type="MARKET",
+    product="CNC"
+)
+
+```
+
+Includes:
+
+-   structured logs
+
+-   retry for network/API errors
+
+-   custom ZerodhaAPIError for failures
+
+* * * * *
+
+⚠️ Important Notes About Zerodha API
+-------------------------------------
+
+-   **Request token expires every few minutes**, so you must generate it daily.
+
+-   **Access token expires at the end of each trading day**.
+
+-   Zerodha does NOT allow auto-login --- must authenticate manually.
+
+-   You must subscribe to **KiteConnect API (₹500/month)**.
+
+* * * * *
+
 
 
 ⚠️ Disclaimer
