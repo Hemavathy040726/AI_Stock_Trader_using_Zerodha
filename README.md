@@ -3,149 +3,630 @@
 
 **AIStockTrader_Zerodha** is an experimental **Agentic AI Proof of Concept (POC)** that autonomously analyzes financial transactions, calculates monthly savings, allocates investments across asset classes, and executes stock purchases via **Zerodha APIs** --- with **human approval in the loop**.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/FastAPI-0.110+-brightgreen?logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/LangChain-LangGraph%20Enabled-orange?logo=openai&logoColor=white" alt="LangChain LangGraph">
-  <img src="https://img.shields.io/badge/Framework-Agentic%20AI-yellow?logo=ai&logoColor=white" alt="Agentic AI">
-  <img src="https://img.shields.io/badge/Status-POC%20Experiment-lightgrey" alt="Status">
-</p>
+This project demonstrates a complete production-ready workflow combining **LangChain-based AI agents**, **Zerodha API automation**, and **FastAPI web interface** to create an intelligent, interactive AI-driven trading system.
 
-<p align="center">
-  <a href="https://fastapi.tiangolo.com" target="_blank">
-    <img src="https://img.shields.io/badge/Powered%20by-FastAPI-green?style=for-the-badge&logo=fastapi&logoColor=white">
-  </a>
-  <a href="https://python.org" target="_blank">
-    <img src="https://img.shields.io/badge/Made%20with-Python-blue?style=for-the-badge&logo=python&logoColor=white">
-  </a>
-  <a href="https://www.zerodha.com" target="_blank">
-    <img src="https://img.shields.io/badge/Zerodha%20Integration-Enabled-lightblue?style=for-the-badge&logo=zerodha&logoColor=white">
-  </a>
-</p>
+<p align="center"> <img src="https://img.shields.io/badge/Python-3.10+-blue?logo=python&logoColor=white" alt="Python"> <img src="https://img.shields.io/badge/FastAPI-0.110+-brightgreen?logo=fastapi&logoColor=white" alt="FastAPI"> <img src="https://img.shields.io/badge/LangChain-LangGraph%20Enabled-orange?logo=openai&logoColor=white" alt="LangChain LangGraph"> <img src="https://img.shields.io/badge/Framework-Agentic%20AI-yellow?logo=ai&logoColor=white" alt="Agentic AI"> <img src="https://img.shields.io/badge/Status-POC%20Experiment-lightgrey" alt="Status"> </p>
 
 
-It demonstrates the integration of **LangChain-based AI agents**, **Zerodha API automation**, and **FastAPI web interface** to form a fully interactive AI-driven trading workflow.
 
-* * * * *
+🎯 Problem Statement
+--------------------
 
-🚀 Features
------------
+Personal finance and investment decision-making present several challenges:
 
-✅ **Agentic Workflow**
+### 1\. **Time-Consuming Manual Analysis**
 
--   Multi-agent pipeline powered by LangGraph.
+-   Individual investors spend hours analyzing transaction statements
+-   Manual portfolio allocation decisions lack systematic guidance
+-   Stock selection requires extensive research across multiple sources
 
--   Agents perform PDF transaction analysis, portfolio allocation, and stock selection.
+### 2\. **Information Overload**
 
-✅ **Human-in-the-Loop Approval**
+-   Multiple financial instruments and investment options available
+-   Difficulty in determining optimal asset class allocation
+-   Lack of data-driven personalized investment recommendations
 
--   Before executing trades, the AI waits for human confirmation.
+### 3\. **Execution Friction**
 
--   Approval flow handled via a clean web UI.
+-   Manual order placement is time-consuming and error-prone
+-   Lack of automated, audit-tracked investment workflows
+-   Need for reliable approval mechanisms before automated actions
 
-✅ **Autonomous Stock Purchase**
+### 4\. **Trust & Transparency Issues**
 
--   Executes trades through Zerodha API (POC simulation or real integration).
-
--   Logs all actions and results in the system state.
-
-✅ **Interactive Web Dashboard**
-
--   Built with FastAPI + HTML + JS.
-
--   Displays AI reasoning, suggested stocks, and final order execution results.
-
--   Includes popup notifications for executed orders.
-
-✅ **Configurable Prompts**
-
--   AI reasoning logic is defined through prompt templates:
-
-    -   `system_prompt_transaction_analyzer.txt`
-
-    -   `user_prompt_transaction_analyzer.txt`
+-   Users want to understand AI's reasoning before approval
+-   Lack of transparent decision-making in investment tools
+-   Need for human-in-the-loop controls for financial decisions
 
 * * * * *
 
-🧩 Architecture Overview
-------------------------
+✨ Solution Overview
+-------------------
+
+AIStockTrader_Zerodha solves these challenges through an **intelligent, transparent, and human-controlled AI workflow**:
+
+```
+📄 Transaction Analysis → 💡 Smart Allocation → 📊 Stock Selection → ✅ Human Approval → 💹 Automated Execution
+
+```
+
+**Key Innovation:** Multi-agent LangGraph workflow with human-in-the-loop approval, combining AI automation with user trust and control.
+
+* * * * *
+
+🚀 Key Features
+---------------
+
+### ✅ Agentic Workflow
+
+-   **Multi-agent pipeline** powered by LangGraph for complex reasoning
+-   **Specialized agents** for transaction analysis, portfolio allocation, and stock selection
+-   **Collaborative agent communication** with shared state management
+-   **Tool-augmented agents** with access to financial data and APIs
+
+### ✅ Human-in-the-Loop Approval
+
+-   **User review stage** before any trade execution
+-   **Clear decision transparency** showing AI reasoning and recommendations
+-   **Approval/Rejection workflow** handled via intuitive web UI
+-   **Audit trail** of all approval decisions and their timestamps
+
+### ✅ Autonomous Stock Purchase
+
+-   **Zerodha API integration** for real-time order placement
+-   **POC simulation mode** for testing without real capital
+-   **Order confirmation popups** with execution details
+-   **Comprehensive action logging** of all trades and results
+
+### ✅ Interactive Web Dashboard
+
+-   **Real-time workflow visualization** showing each processing stage
+-   **Step-by-step AI reasoning** displayed for transparency
+-   **Clean, intuitive interface** optimized for quick decision-making
+-   **Mobile-responsive design** for accessibility
+-   **Live status updates** via WebSocket-ready architecture
+
+### ✅ Configurable AI Logic
+
+-   **Prompt template system** for customizable AI behavior
+-   **Easy parameter tuning** without code changes
+-   **Flexible agent instructions** for different investment strategies
+-   **Temperature and model selection** for fine-tuning AI output
+
+### ✅ Security & Reliability
+
+-   **Secure credential management** via environment variables
+-   **Secret key handling** with comprehensive .gitignore
+-   **API key encryption** for Zerodha and LLM providers
+-   **Rate limiting and backoff strategies** for API calls
+
+* * * * *
+
+🏗️ Architecture
+----------------
+
+### System Overview Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     Frontend (Web UI)                           │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  HTML5 + JavaScript                                      │  │
+│  │  - Transaction Upload Interface                          │  │
+│  │  - Real-time Workflow Status Display                     │  │
+│  │  - Approval Decision Buttons                             │  │
+│  │  - Order Confirmation Notifications                      │  │
+│  └──────────────────────────────────────────────────────────┘  │
+└────────────────────────┬────────────────────────────────────────┘
+                         │ HTTP/WebSocket
+┌────────────────────────▼────────────────────────────────────────┐
+│              Backend (FastAPI Server)                           │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  API Routes & State Management                           │  │
+│  │  - POST /upload - Process transaction files              │  │
+│  │  - GET /status - Retrieve workflow state                 │  │
+│  │  - POST /approve - Submit approval decision              │  │
+│  │  - GET /results - Fetch execution results                │  │
+│  └──────────────────────────────────────────────────────────┘  │
+└────────────────────────┬────────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────────┐
+│         AI Agent Orchestration (LangGraph)                      │
+│  ┌──────────────────────────────────────────────────────────┐  │
+│  │  Multi-Agent Pipeline                                    │  │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐   │  │
+│  │  │ Transaction  │→ │  Portfolio   │→ │    Stock     │   │  │
+│  │  │   Analyzer   │  │  Allocator   │  │   Picker     │   │  │
+│  │  └──────────────┘  └──────────────┘  └──────────────┘   │  │
+│  │         ↓                ↓                   ↓           │  │
+│  │  ┌──────────────────────────────────────────────────┐   │  │
+│  │  │     Shared State (Finance Data Model)            │   │  │
+│  │  │  - Savings Amount, Portfolio Allocation          │   │  │
+│  │  │  - Investment Recommendations, Approval Status   │   │  │
+│  │  └──────────────────────────────────────────────────┘   │  │
+│  └──────────────────────────────────────────────────────────┘  │
+└────────────────────────┬────────────────────────────────────────┘
+                         │
+         ┌───────────────┼───────────────┐
+         ▼               ▼               ▼
+    ┌─────────┐    ┌─────────┐    ┌─────────┐
+    │ LLM API │    │ Finance │    │ Zerodha │
+    │(Groq)   │    │  Tools  │    │   API   │
+    └─────────┘    └─────────┘    └─────────┘
+
+```
+
+### Component Architecture
 
 ```
 AIStockTrader_Zerodha/
 │
 ├── src/
 │   ├── api/
-│   │   └── server.py               # FastAPI backend + web routes
+│   │   └── server.py                    # FastAPI backend, routes, WebSocket
 │   │
 │   ├── templates/
-│   │   └── index.html              # Frontend web UI
+│   │   ├── index.html                   # Main web UI
+│   │   ├── styles.css                   # UI styling
+│   │   └── client.js                    # Frontend logic
 │   │
 │   ├── core/
 │   │   ├── entity/
-│   │   │   └── finance_state.py    # Shared workflow state definition
+│   │   │   └── finance_state.py         # State model definition
+│   │   │
 │   │   ├── graph/
-│   │   │   └── graph_creation.py   # LangGraph agent workflow creation
+│   │   │   └── graph_creation.py        # LangGraph workflow creation
+│   │   │
 │   │   ├── helpers/
-│   │   │   └── all helpers     # Utility to load prompt templates
-│   │   └── nodes/
-│   │   |   └── all agent nodes with tool nodes  # Core agent logic
-│   │   └── tools/
-│   │           └── all tools definition # tools used by agents
+│   │   │   ├── load_prompt.py           # Prompt template loader
+│   │   │   └── pdf_processor.py         # Transaction PDF parsing
+│   │   │
+│   │   ├── nodes/
+│   │   │   ├── transaction_analyzer.py  # Transaction analysis node
+│   │   │   ├── portfolio_allocator.py   # Asset allocation node
+│   │   │   ├── stock_picker.py          # Stock selection node
+│   │   │   ├── approval_node.py         # Human approval node
+│   │   │   └── execution_node.py        # Order execution node
+│   │   │
+│   │   ├── tools/
+│   │   │   ├── zerodha_tools.py         # Zerodha API wrapper
+│   │   │   ├── financial_tools.py       # Financial calculations
+│   │   │   └── data_tools.py            # Data retrieval tools
+│   │   │
+│   │   ├── prompts/
+│   │   │   ├── system_prompt_*.txt      # System prompts for agents
+│   │   │   └── user_prompt_*.txt        # User prompts for agents
+│   │   │
+│   │   └── utils/
+│   │       ├── logger.py                # Logging configuration
+│   │       ├── error_handler.py         # Error handling utilities
+│   │       └── retry_handler.py         # Retry mechanism with backoff
 │   │
-│   └── data/
-│       └── transactions_november.pdf # Sample transaction file
+│   ├── data/
+│   │   └── transactions_november.pdf    # Sample transaction file
+│   │
+│   └── config.py                        # Configuration & LLM initialization
 │
-└── README.md
+├── tests/
+│   ├── test_agents.py                   # Agent unit tests
+│   ├── test_api.py                      # API endpoint tests
+│   ├── test_error_handling.py           # Error scenario tests
+│   └── test_integration.py              # End-to-end workflow tests
+│
+├── logs/
+│   └── app.log                          # Application logs
+│
+├── Dockerfile                           # Container configuration
+├── docker-compose.yaml                  # Multi-container orchestration
+├── requirements.txt                     # Python dependencies
+├── .env.example                         # Environment template
+├── .gitignore                           # Git ignore rules
+├── LICENSE                              # License information
+└── README.md                            # This file
 
 ```
 
 * * * * *
 
-🧠 Workflow Summary
--------------------
+🔄 System Workflow
+------------------
 
-### 1️⃣ Transaction Analyzer Agent
+The entire workflow follows a state machine pattern with five distinct stages:
 
-Reads and interprets the uploaded bank statement or PDF of monthly transactions to determine **total monthly savings**.
+### Stage 1️⃣: **Transaction Analysis Agent**
 
-### 2️⃣ Portfolio Allocator Agent
+**Purpose:** Extract financial insights from user transactions
 
-Allocates savings into asset classes (Equity, Debt, Gold, etc.) using simple AI-based heuristics.
+**Process:**
 
-### 3️⃣ Stock Picker Agent
+1.  User uploads bank statement or transaction PDF
+2.  PDF is parsed and converted to text
+3.  LLM agent analyzes transactions with financial reasoning
+4.  Agent calculates total monthly savings using agent tools
+5.  Results stored in shared workflow state
 
-Fetches stock recommendations (from mock data or live APIs) and proposes an equity investment strategy.(we address only stocks here)
+**State Output:**
 
-### 4️⃣ Human Approval Stage
+```
+{
+    "monthly_transactions": [...],
+    "total_income": 50000,
+    "total_expenses": 37500,
+    "monthly_savings": 12500,
+    "current_step": "analyze_portfolio"
+}
 
-Displays the AI's decision and waits for human input --- *Approve* or *Reject*.
+```
 
-### 5️⃣ Stock Purchase Agent
+**AI Prompt Used:** `system_prompt_transaction_analyzer.txt`
 
-If approved, executes the trade through Zerodha's API (real or simulated), then displays the result in UI.
-
-* * * * *
-
-🌐 Web Interface
-----------------
-
-A simple and elegant UI is served via **FastAPI**.
-
-### ▶️ Run Workflow
-
-Click **Start Workflow** to let the AI analyze transactions and suggest investments.
-
-### 🧾 Approval
-
-When prompted, click **Approve** or **Reject**.\
-If approved, the agent will attempt to execute the order and display a popup notification with order details.
+**Error Handling:** PDF parsing failures trigger graceful error messages with retry options
 
 * * * * *
 
-⚙️ Installation & Setup
+### Stage 2️⃣: **Portfolio Allocator Agent**
+
+**Purpose:** Recommend optimal asset class allocation based on savings
+
+**Process:**
+
+1.  Receives monthly savings amount from previous stage
+2.  Applies financial heuristics and AI reasoning
+3.  Allocates savings across asset classes:
+    -   Equity (60%) - Growth-oriented
+    -   Debt (30%) - Stability-focused
+    -   Gold (10%) - Hedge against inflation
+4.  Generates allocation explanation for transparency
+5.  Updates workflow state with allocation details
+
+**State Output:**
+
+```
+{
+    "portfolio_allocation": {
+        "equity": {"percentage": 60, "amount": 7500},
+        "debt": {"percentage": 30, "amount": 3750},
+        "gold": {"percentage": 10, "amount": 1250}
+    },
+    "allocation_reasoning": "...",
+    "current_step": "select_stocks"
+}
+
+```
+
+**AI Prompt Used:** `system_prompt_portfolio_allocator.txt`
+
+* * * * *
+
+### Stage 3️⃣: **Stock Picker Agent**
+
+**Purpose:** Select specific stocks for equity allocation
+
+**Process:**
+
+1.  Receives equity allocation amount from portfolio agent
+2.  Queries mock stock database or live APIs for recommendations
+3.  Applies selection criteria:
+    -   Market cap, sector diversity, performance metrics
+4.  Recommends specific stocks with reasoning
+5.  Prepares order details for human review
+
+**State Output:**
+
+```
+{
+    "investment_instruments": [
+        {
+            "tradingsymbol": "INFY",
+            "company_name": "Infosys",
+            "allocation_amount": 3750,
+            "price": 1850,
+            "quantity": 2,
+            "reasoning": "..."
+        },
+        {
+            "tradingsymbol": "TCS",
+            "company_name": "Tata Consultancy",
+            "allocation_amount": 3750,
+            "price": 3500,
+            "quantity": 1,
+            "reasoning": "..."
+        }
+    ],
+    "current_step": "awaiting_approval"
+}
+
+```
+
+* * * * *
+
+### Stage 4️⃣: **Human Approval Node**
+
+**Purpose:** Enable user review and decision-making before execution
+
+**Process:**
+
+1.  Workflow pauses at this stage
+2.  Web UI displays all recommendations with full reasoning
+3.  User reviews:
+    -   Transaction analysis
+    -   Portfolio allocation breakdown
+    -   Specific stock selections
+4.  User clicks **Approve** or **Reject**
+5.  Approval decision is timestamped and logged
+
+**UI Interaction Flow:**
+
+```
+[Show Analysis] → [Display Allocation] → [List Stocks]
+                                              ↓
+                              [Approve Button] [Reject Button]
+
+```
+
+**Audit Trail:** All approvals logged with timestamp and user context
+
+* * * * *
+
+### Stage 5️⃣: **Stock Purchase Agent**
+
+**Purpose:** Execute approved trades through Zerodha API
+
+**Process:**
+
+1.  If approved, agent receives confirmed stock list
+2.  For each stock, creates market order:
+    -   Calls Zerodha API to place order
+    -   Implements retry logic with exponential backoff
+    -   Handles API errors gracefully
+3.  Captures order confirmation or error details
+4.  Displays popup notification with results
+
+**Order Execution Details:**
+
+```
+{
+    "order_id": "230810000000001",
+    "tradingsymbol": "INFY",
+    "quantity": 2,
+    "price": 1850,
+    "status": "COMPLETED",
+    "timestamp": "2025-11-28T14:30:00Z",
+    "execution_details": {...}
+}
+
+```
+
+**Error Scenarios Handled:**
+
+-   Network timeouts → Retry with backoff
+-   Insufficient funds → Graceful failure message
+-   API rate limiting → Queue and retry
+-   Zerodha AMO restrictions → Fallback to manual order
+
+* * * * *
+
+🎨 User Interface Design
+------------------------
+
+### Design Philosophy
+
+The UI prioritizes **simplicity, transparency, and quick decision-making** through:
+
+1.  **Clear Visual Hierarchy** - Most important information first
+2.  **Real-time Feedback** - Users see workflow progress instantly
+3.  **Decision Support** - All necessary information for informed approval
+4.  **Minimal Friction** - One-click actions where possible
+
+### Main UI Sections
+
+#### 1\. **Upload Section**
+
+```
+┌─────────────────────────────────────┐
+│  📤 Upload Transaction Statement    │
+│  ┌─────────────────────────────────┐│
+│  │ Drag & Drop or Click to Upload  ││
+│  │ Supported: PDF, CSV              ││
+│  └─────────────────────────────────┘│
+│  [Start Analysis →]                 │
+└─────────────────────────────────────┘
+
+```
+
+**Design Decisions:**
+
+-   Drag-and-drop for ease of use
+-   Format flexibility (PDF primary, CSV backup)
+-   Clear call-to-action button
+
+#### 2\. **Workflow Status Display**
+
+```
+┌─────────────────────────────────────┐
+│  📊 Workflow Progress               │
+│  ✅ Transaction Analysis Complete   │
+│  ✅ Portfolio Allocation Complete   │
+│  ✅ Stock Selection Complete        │
+│  ⏳ Awaiting Your Approval...       │
+└─────────────────────────────────────┘
+
+```
+
+**Design Decisions:**
+
+-   Status indicators (✅ ⏳ ❌) for quick scanning
+-   Sequential progress display
+-   Milestones clearly marked
+
+#### 3\. **Analysis Results Display**
+
+```
+┌──────────────────────────────────────────┐
+│ 💰 Financial Analysis                    │
+├──────────────────────────────────────────┤
+│ Monthly Income:        ₹50,000           │
+│ Monthly Expenses:      ₹37,500           │
+│ Monthly Savings:       ₹12,500           │
+│                                          │
+│ 📊 Recommended Allocation                │
+│ - Equity (60%):        ₹7,500            │
+│ - Debt (30%):          ₹3,750            │
+│ - Gold (10%):          ₹1,250            │
+└──────────────────────────────────────────┘
+
+```
+
+**Design Decisions:**
+
+-   Color-coded money values for clarity
+-   Breakdown shows exact amounts
+-   Icons aid quick understanding
+
+#### 4\. **Stock Recommendations Display**
+
+```
+┌──────────────────────────────────────────┐
+│ 📈 Recommended Stocks                    │
+├──────────────────────────────────────────┤
+│ 1. INFY (Infosys)                        │
+│    - Allocation: ₹3,750                  │
+│    - Current Price: ₹1,850               │
+│    - Quantity: 2 shares                  │
+│    - Reason: Growth leader in IT sector  │
+│                                          │
+│ 2. TCS (Tata Consultancy)                │
+│    - Allocation: ₹3,750                  │
+│    - Current Price: ₹3,500               │
+│    - Quantity: 1 share                   │
+│    - Reason: Stable dividend yield       │
+└──────────────────────────────────────────┘
+
+```
+
+**Design Decisions:**
+
+-   Card-based layout for multiple items
+-   AI reasoning displayed for transparency
+-   Clear financial metrics
+
+#### 5\. **Approval Decision Section**
+
+```
+┌──────────────────────────────────────────┐
+│ ✅ APPROVE THIS PLAN                     │
+│    Proceed with stock purchase           │
+│    [APPROVE →] [REJECT →]                │
+│                                          │
+│ ℹ️  This action will execute trades      │
+│    on your Zerodha account               │
+│    Review all details above before      │
+│    making a decision                     │
+└──────────────────────────────────────────┘
+
+```
+
+**Design Decisions:**
+
+-   Prominent buttons for key decisions
+-   Warning disclaimer for financial actions
+-   Simple yes/no flow
+
+#### 6\. **Execution Results Display**
+
+```
+┌──────────────────────────────────────────┐
+│ ✅ ORDERS EXECUTED SUCCESSFULLY          │
+├──────────────────────────────────────────┤
+│ Order #1: INFY - 2 shares @ ₹1,850       │
+│ Status: ✅ COMPLETED                      │
+│ Order ID: 230810000000001                │
+│                                          │
+│ Order #2: TCS - 1 share @ ₹3,500         │
+│ Status: ✅ COMPLETED                      │
+│ Order ID: 230810000000002                │
+│                                          │
+│ Total Investment: ₹7,500                 │
+│ [View Zerodha Portfolio →]               │
+└──────────────────────────────────────────┘
+
+```
+
+**Design Decisions:**
+
+-   Success confirmation with visual cues
+-   Order details for reference
+-   Link to broker dashboard for verification
+
+### UI Interaction Flows
+
+**Happy Path:**
+
+```
+Upload → Analyze → Review → Approve → Execute → Success
+
+```
+
+**Rejection Path:**
+
+```
+Upload → Analyze → Review → Reject → [Ask for Modifications]
+
+```
+
+**Error Path:**
+
+```
+Upload → Error → Show Message → [Retry] or [Cancel]
+
+```
+
+### Responsive Design Considerations
+
+-   **Desktop (1024px+):** Full multi-column layout with side panels
+-   **Tablet (768-1024px):** Stacked sections with collapsible panels
+-   **Mobile (< 768px):** Single-column layout with swipe gestures
+
+* * * * *
+
+⚙️ Technical Stack
+------------------
+
+| Layer | Technology | Purpose | Rationale |
+| --- | --- | --- | --- |
+| **Frontend** | HTML5 + CSS3 | Web interface | Simple, no build step required |
+| **Frontend Logic** | JavaScript (Vanilla) | Client-side interactions | Lightweight, no framework overhead |
+| **Backend Framework** | FastAPI 0.115+ | REST API server | Fast, modern, auto-docs |
+| **Backend Runtime** | Python 3.10+ | Application runtime | Rich ecosystem, AI/ML libraries |
+| **AI Orchestration** | LangGraph | Multi-agent workflow | State machine, tool calling |
+| **LLM Provider** | Groq (Llama 3.3) | Language model inference | Fast, cost-effective |
+| **LLM Framework** | LangChain | Agent prompting, tools | Proven patterns, wide adoption |
+| **Finance API** | Zerodha Kiteconnect | Stock trading | India's largest retail broker |
+| **Document Processing** | PyPDF2 | Transaction PDF parsing | Lightweight, reliable |
+| **Data Manipulation** | Pandas | Financial data handling | Standard in finance domain |
+| **Logging** | Loguru | Application logging | Structured, colorized logs |
+| **Environment Config** | python-dotenv | Secrets management | Standard practice |
+| **Server Deployment** | Uvicorn | ASGI server | FastAPI standard |
+| **Containerization** | Docker | Application packaging | Reproducible deployment |
+| **Orchestration** | Docker Compose | Multi-service setup | Local development + testing |
+
+* * * * *
+
+📦 Installation & Setup
 -----------------------
 
-### 1️⃣ Clone the Repository
+### Prerequisites
+
+Before starting, ensure you have:
+
+-   **Python 3.10 or higher** installed
+-   **Git** for version control
+-   **pip** package manager
+-   **API Keys:**
+    -   Groq API key (for LLM)
+    -   Zerodha API credentials (for trading)
+
+### Step 1: Clone the Repository
 
 ```
 git clone https://github.com/yourusername/AIStockTrader_Zerodha.git
@@ -153,47 +634,278 @@ cd AIStockTrader_Zerodha
 
 ```
 
-### 2️⃣ Create Virtual Environment
+### Step 2: Create Virtual Environment
 
 ```
+# Windows
 python -m venv .venv
-source .venv/bin/activate     # (Linux/macOS)
-.venv\Scripts\activate        # (Windows)
+.venv\Scripts\activate
+
+# Linux/macOS
+python3 -m venv .venv
+source .venv/bin/activate
 
 ```
 
-### 3️⃣ Install Dependencies
+### Step 3: Install Dependencies
 
 ```
 pip install -r requirements.txt
 
 ```
 
-### 4️⃣ Run the Server
+This installs:
+
+-   `fastapi>=0.115.0` - Web framework
+-   `uvicorn[standard]>=0.30.0` - ASGI server
+-   `langchain-groq` - LLM integration
+-   `langgraph` - Agent orchestration
+-   `kiteconnect` - Zerodha API
+-   `PyPDF2` - PDF parsing
+-   `loguru` - Logging
+-   `python-dotenv` - Configuration
+-   `pandas` - Data handling
+-   `jinja2` - Template rendering
+
+### Step 4: Configure Environment Variables
+
+Create a `.env` file in the project root:
 
 ```
-uvicorn src.api.server:app --reload
+cp .env.example .env
 
 ```
 
-Then open your browser and visit:
+Edit `.env` with your credentials:
 
-👉 **[http://127.0.0.1:8000](http://127.0.0.1:8000/)**
+```
+# LLM Configuration
+GROQ_API_KEY=your_groq_api_key_here
+GROQ_LLM_MODEL=llama-3.3-70b-versatile
+
+# Zerodha Configuration
+ZERODHA_API_KEY=your_zerodha_api_key
+ZERODHA_SECRET_KEY=your_zerodha_secret_key
+REQUEST_TOKEN_FROM_URL=https://kite.zerodha.com/connect/login?v=3&api_key=API_KEY
+ZERODHA_ACCESS_TOKEN=your_zerodha_access_token
+
+# Application Configuration
+DEBUG=True
+LOG_LEVEL=INFO
+ENVIRONMENT=development
+
+```
+
+### Step 5: Run the Application
+
+```
+uvicorn src.api.server:app --reload --host 0.0.0.0 --port 8000
+
+```
+
+**Output:**
+
+```
+INFO:     Uvicorn running on http://0.0.0.0:8000
+INFO:     Application startup complete
+
+```
+
+### Step 6: Access the Application
+
+Open your browser and navigate to:
+
+```
+http://127.0.0.1:8000
+
+```
 
 * * * * *
 
-🧰 Tech Stack
--------------
 
-| Layer | Technology | Purpose |
-| --- | --- | --- |
-| **Frontend** | HTML + JS | Interactive web UI |
-| **Backend** | FastAPI | Handles workflow execution |
-| **AI Engine** | LangChain + LangGraph | Multi-agent workflow |
-| **Finance Logic** | Python + Zerodha APIs | Trade simulation / execution |
-| **State Management** | Custom `State` class | Tracks agent data flow |
+**Custom Error Handling Framework**
+===================================
 
-* * * * *
+🔥 Custom Exception Framework
+-----------------------------
+
+To improve reliability and make debugging easier, the project now includes a **centralized custom exception hierarchy** located in:
+
+`src/utils/exceptions.py`
+
+### ⭐ Key Features
+
+-   Provides **clear, meaningful error types** instead of generic exceptions
+
+-   Allows the retry system to differentiate between retryable and non-retryable failures
+
+-   Makes debugging easier by showing **high-level, human-readable messages**
+
+### 📌 Available Exceptions
+
+| Exception Name | Purpose |
+| --- | --- |
+| **AppError** | Base class for all app errors |
+| **PDFReadError** | PDF extraction failures |
+| **ZerodhaAPIError** | Problems calling Zerodha APIs / LTP fetch |
+| **ToolExecutionError** | Generic tool-level failure |
+| **RetryableError** | Forces retry mechanism |
+
+### 📘 Why we need this
+
+-   Clear separation of failure types
+
+-   Better error propagation in agents
+
+-   Unified error handling across the system
+
+
+
+**Retry System With Exponential Backoff**
+=========================================
+
+🔁 Exponential Backoff Retry Framework
+--------------------------------------
+
+A reusable `@retry` decorator has been added to automatically retry failing operations.
+
+📍 File:
+
+`src/utils/retry.py`
+
+### ⭐ Features
+
+-   Retry unstable functions (e.g., network calls, API requests)
+
+-   Exponential backoff (`delay → delay * backoff`)
+
+-   Optional jitter to prevent retry storms
+
+-   Logs all retry attempts
+
+-   Supports custom retryable exception types
+
+### 📌 Example Usage
+
+`@retry(max_attempts=5, delay=2, backoff=2, retry_on=(ZerodhaAPIError,))
+def fetch_prices():
+    return kite.ltp(['NSE:INFY'])`
+
+### 📘 Why we need this
+
+-   Makes your agents **fault tolerant**
+
+-   Prevents instant failures on temporary API issues
+
+-   Ensures stable and smooth execution
+
+
+
+**Centralized Structured Logging System**
+=========================================
+
+📝 Central Logging System (Console + File Logs)
+-----------------------------------------------
+
+A production-grade logging system has been added using **Loguru**.
+
+📍 File:
+
+`src/utils/logger.py`
+
+### ⭐ Features
+
+-   Colorized, detailed console logs
+
+-   Persistent file logging (`logs/app.log`)
+
+-   Automatic log rotation (10MB max → zipped rotate)
+
+-   Backtrace + diagnose mode for debugging
+
+-   Zero `print()` calls --- entire app uses `logger`
+
+### 📌 Example
+
+`from src.utils.logger import logger
+
+logger.info("Starting stock suggestion tool...")
+logger.success("Order placement complete")
+logger.error("Failed to fetch Zerodha data")`
+
+### 📘 Why we need this
+
+-   Helps track errors quickly
+
+-   Works seamlessly inside FastAPI + agents
+
+-   Enables auditability for production
+
+**Test Suite (pytest)**
+=======================
+
+🧪 Automated Test Suite Added
+-----------------------------
+
+A complete test suite is now added under:
+
+`tests/`
+
+### Tests cover:
+
+-   PDF reader tool
+
+-   Portfolio builder logic
+
+-   Retry decorator behavior
+
+-   Stock suggestion tool
+
+-   Core utilities
+
+### ⭐ Run Tests
+
+`pytest -v`
+
+### 📘 The above tests ensure
+
+-   Ensures agents and tools work as expected
+
+-   Reduces regressions as features grow
+
+-   Makes CI/CD-ready
+
+**Docker & Docker Compose Support**
+===================================
+
+🐳 Dockerized Deployment Ready
+------------------------------
+
+The project now supports full containerization.
+
+### 📁 Files Added
+
+-   `Dockerfile`
+
+-   `docker-compose.yml`
+
+### ⭐ How to Run (Local or Production)
+
+`docker-compose up --build`
+
+### Mounted volumes
+
+-   `./data → /app/data`
+
+-   `./logs → /app/logs`
+
+### 🧰 Why this matters
+
+-   Consistent environment
+
+-   Easy to run anywhere
+
+-   Cloud/server deployment-ready
 
 🧪 Example Output
 -----------------
@@ -211,20 +923,6 @@ Then open your browser and visit:
 
 * * * * *
 
-🧭 Future Enhancements
-----------------------
-
--   🔗 Zerodha Complete Trading
-
--   🔄 Support for multiple brokers (Groww, AngelOne, Upstox)
-
--   🧠 Reinforcement learning--based allocation logic
-
--   📈 Portfolio visualization dashboard
-
--   🔒 End-to-end encryption of transaction data
-
-* * * * *
 
 ⚠️ Disclaimer
 -------------
@@ -241,3 +939,4 @@ It should **not be used for live trading without appropriate risk controls** and
 AI Researcher | Python Developer
 
 * * * * *
+
