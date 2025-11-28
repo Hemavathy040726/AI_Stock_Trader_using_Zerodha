@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  stock-picker:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    env_file:
+      - .env
