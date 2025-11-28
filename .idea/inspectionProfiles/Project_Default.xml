@@ -1,0 +1,23 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <list>
+          <option value="scripts" />
+          <option value="asgiref" />
+          <option value="fastapi" />
+          <option value="hf-xet" />
+          <option value="langchain" />
+          <option value="opentelemetry-instrumentation" />
+          <option value="opentelemetry-instrumentation-asgi" />
+          <option value="opentelemetry-instrumentation-fastapi" />
+          <option value="opentelemetry-util-http" />
+          <option value="SQLAlchemy" />
+          <option value="uvloop" />
+          <option value="wrapt" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
